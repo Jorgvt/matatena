@@ -7,31 +7,17 @@
     "text": "Each game board (one for each player) can be represented, for example, with a np.array. But we may probably benefit from having a “global” object that controls both of the players to keep track of both boards and the score in a more simple manner.\n\n\n\n\n Game (n_players=2, board_size=3)\n\nClass that controls the whole game. It keeps track of both boards.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nn_players\nint\n2\nNumber of players.\n\n\nboard_size\nint\n3\nSize of the board. It is a squared grid of board_sizexboard_size\n\n\n\n\nmatatena = Game()\nassert not matatena.is_done()\nmatatena\n\nPlayer 1\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 2 *\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\n\n\n\nmatatena = Game()\nmatatena.boards[1] = np.ones_like(matatena.boards[1])\nassert matatena.is_done()\nmatatena\n\nPlayer 1 *\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 2\n[[1. 1. 1.]\n [1. 1. 1.]\n [1. 1. 1.]]\n\n\n\nmatatena = Game()\nmatatena.add_dice(player=0, column=0, dice=6)\nprint(matatena)\nmatatena.add_dice(player=0, column=0, dice=6)\nprint(matatena)\n\nPlayer 1 *\n[[6. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 2\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 1\n[[6. 0. 0.]\n [6. 0. 0.]\n [0. 0. 0.]]\nPlayer 2 *\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\n\n\n\n\n\n\n\n\n\n Game.score (player)\n\nReturns the calculated score for a player. If there are numbers repeated in a column, their values must be added and multiplied by the number of repetitions. Otherwise, they are added. If there are repreated and non-repeated in the same column, the repeated are summed and multiplied by the number of repetitions and then the result is added to the non-repeated.\n\n\n\n\nDetails\n\n\n\n\nplayer\nNumber of the player we want to calculate the score.\n\n\n\n\nmatatena = Game()\nmatatena.boards[0] = np.array([[1,0,0],\n                               [1,2,3],\n                               [4,2,5]])\nassert matatena.score(0) == 8+8+8"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "matatena",
-    "section": "",
-    "text": "pip install {{lib_path}}"
-  },
-  {
-    "objectID": "index.html#install",
-    "href": "index.html#install",
-    "title": "{{repo}}",
-    "section": "Install",
-    "text": "Install\npip install {{lib_path}}"
-  },
-  {
-    "objectID": "index.html#how-to-use",
-    "href": "index.html#how-to-use",
-    "title": "matatena",
-    "section": "How to use",
-    "text": "How to use\nFill me in please! Don’t forget code examples:\n\n1+1\n\n2"
-  },
-  {
     "objectID": "exceptions.html",
     "href": "exceptions.html",
     "title": "Custom exceptions",
     "section": "",
     "text": "ColumnFullError\nRaised when trying to put a dice in a column that is already full."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "matatena",
+    "section": "",
+    "text": "pip install {{lib_path}}"
   }
 ]
