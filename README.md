@@ -6,5 +6,5 @@ matatena
 ## Install
 
 ``` sh
-pip install {{lib_path}}
+pip install matatena
 ```
