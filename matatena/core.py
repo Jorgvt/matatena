@@ -5,6 +5,7 @@ __all__ = ['Game']
 
 # %% ../00_core.ipynb 3
 from collections import Counter
+from itertools import cycle
 
 import numpy as np
 from fastcore.basics import patch
@@ -24,6 +25,7 @@ class Game():
         self.board_size = board_size
         self.boards = np.zeros(shape=(n_players, board_size, board_size))
         self.current_player = self.choose_initial_player()
+        self._players = cycle(range(n_players))
 
     def __repr__(self):
         """
@@ -43,6 +45,12 @@ class Game():
         The initial player is chosen at random at the beggining of the game.
         """
         return np.random.choice([0,1])
+    
+    def _change_player(self):
+        """
+        Changes the current player.
+        """
+        return next(self._players)
 
     def is_done(self):
         """
@@ -61,12 +69,12 @@ class Game():
         """
         board_column = self.boards[player][:,column]
         idxs_dice = np.where(board_column==0)[0]
-        if len(idxs_dice)==0: raise ColumnFullError
+        if len(idxs_dice)==0: raise ColumnFullError # Can't place dice in a full column.
         board_column[idxs_dice[0]] = dice
-        
+        self.current_player = self._change_player()
         return self.is_done()
 
-# %% ../00_core.ipynb 10
+# %% ../00_core.ipynb 11
 @patch
 def score(self: Game,
           player, # Number of the player we want to calculate the score.
