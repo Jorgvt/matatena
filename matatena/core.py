@@ -34,7 +34,7 @@ class Game():
         """
         player0 = "Player 1 *" if self.current_player==0 else "Player 1"
         player1= "Player 2 *" if self.current_player==1 else "Player 2"
-
+        
         return "\n".join([player0,
                           str(self.boards[0]),
                           player1,
@@ -50,7 +50,8 @@ class Game():
         """
         Changes the current player.
         """
-        return next(self._players)
+        # return next(self._players)
+        self.current_player = next(self._players)
 
     def is_done(self):
         """
@@ -71,10 +72,9 @@ class Game():
         idxs_dice = np.where(board_column==0)[0]
         if len(idxs_dice)==0: raise ColumnFullError # Can't place dice in a full column.
         board_column[idxs_dice[0]] = dice
-        self.current_player = self._change_player()
         return self.is_done()
 
-# %% ../00_core.ipynb 11
+# %% ../00_core.ipynb 12
 @patch
 def score(self: Game,
           player, # Number of the player we want to calculate the score.
@@ -92,3 +92,87 @@ def score(self: Game,
         sum_col = sum([n*reps*reps for n, reps in cntr.items()])
         total += sum_col
     return total
+
+# %% ../00_core.ipynb 15
+@patch
+def __repr__(self: Game):
+    """
+    Representation of the game state.
+    The current player is marked with an *.
+    """
+    player0 = f"Player 1 ({self.score(0)})"
+    player1 = f"Player 2 ({self.score(1)})"
+    player0 = f"{player0} *" if self.current_player==0 else player0
+    player1= f"{player1} *" if self.current_player==1 else player1
+    
+    return "\n".join([player0,
+                      str(self.boards[0]),
+                      player1,
+                      str(self.boards[1])])
+
+# %% ../00_core.ipynb 17
+@patch
+def _pad_player_board(self: Game,
+                      player: str, # Player __repr__
+                      board: str, # Board __repr__
+                      ):
+    """
+    Pads the representation of a player indicator and a board
+    so that each line has the same characters.
+    """
+    max_len = max(max(map(len, board.split("\n"))), len(player))
+    return "\n".join(map(lambda x: x.ljust(max_len, " "), "\n".join([player, board]).split("\n")))
+
+# %% ../00_core.ipynb 18
+@patch
+def _join_players_boards(self: Game,
+                         playerboard1: str, # Padded playerboard obtained from `._pad_player_board()`.
+                         playerboard2: str, # Padded playerboard obtained from `._pad_player_board()`.
+                         separator: str = " | ", # Character used as a separator.
+                         ):
+    """
+    Join two padded player boards with a separator in between.
+    """
+    n_lines = max(playerboard1.count("\n"), playerboard2.count("\n")) + 1 # Last line doesn't have \n.
+    separator = "\n".join([separator]*n_lines)
+
+    split_lines = zip(playerboard1.split("\n"), separator.split("\n"))
+    res = "\n".join([s1 + s2 for s1, s2 in split_lines])
+    split_lines = zip(res.split("\n"), playerboard2.split("\n"))
+    res = "\n".join([s1 + s2 for s1, s2 in split_lines])
+    return res
+
+# %% ../00_core.ipynb 19
+@patch
+def __repr__(self: Game):
+    """
+    Representation of the game state.
+    The current player is marked with an *.
+    """
+    player0 = f"Player 1 ({self.score(0)})"
+    player1 = f"Player 2 ({self.score(1)})"
+    player0 = f"{player0} *" if self.current_player==0 else player0
+    player1= f"{player1} *" if self.current_player==1 else player1
+
+    board0 = str(self.boards[0])
+    board1 = str(self.boards[1])
+    
+    padded0 = self._pad_player_board(player0, board0)
+    padded1 = self._pad_player_board(player1, board1)
+    
+    return self._join_players_boards(padded0, padded1)
+
+# %% ../00_core.ipynb 22
+@patch
+def play_turn(self: Game):
+    """
+    Plays a full turn.
+    """
+    dice = np.random.choice(range(1,7))
+    print(f"Dice to place: {dice}")
+    print(self)
+    column = int(input("Select column: "))
+    self.add_dice(player=self.current_player,
+                  column=column,
+                  dice=dice)
+    self._change_player()
