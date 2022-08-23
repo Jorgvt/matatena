@@ -4,14 +4,14 @@
     "href": "core.html",
     "title": "Matatena",
     "section": "",
-    "text": "Knucklebones is a simple game in which a dice is rolled and one of the two players must place it in their corresponding board. Each player can only choose the column in which the dice is placed, and if any dice is already placed in that column, the following is put behind. If there are more than one dice with the same number, their score is multiplied. For example, if a column has two 6s, their values add up to 36, but if a column has a 6 and a 5, the total score would be 11.\n\nThe basic board is a 3x3 grid."
+    "text": "Knucklebones is a simple game in which a dice is rolled and one of the two players must place it in their corresponding board. Each player can only choose the column in which the dice is placed, and if any dice is already placed in that column, the following is put behind. If there are more than one dice with the same number, their score is added and then multiplied by the number of times it appears. For example, if a column has two 6s, their values add up to 24, but if a column has a 6 and a 5, the total score would be 11.\n\nThe basic board is a 3x3 grid."
   },
   {
     "objectID": "core.html#calculating-the-score",
     "href": "core.html#calculating-the-score",
     "title": "Matatena",
     "section": "Calculating the score",
-    "text": "Calculating the score\n\n\nGame.score\n\n Game.score (player)\n\nReturns the calculated score for a player. If there are numbers repeated in a column, their values must be added and multiplied by the number of repetitions. Otherwise, they are added. If there are repreated and non-repeated in the same column, the repeated are summed and multiplied by the number of repetitions and then the result is added to the non-repeated.\n\n\n\n\nDetails\n\n\n\n\nplayer\nNumber of the player we want to calculate the score.\n\n\n\n\nmatatena = Game()\nmatatena.boards[0] = np.array([[1,0,0],\n                               [1,2,3],\n                               [4,2,5]])\nassert matatena.score(0) == 8+8+8"
+    "text": "Calculating the score\n\n\nGame.score\n\n Game.score (player)\n\nReturns the calculated score for a player. If there are numbers repeated in a column, their values must be added and multiplied by the number of repetitions. Otherwise, they are added. If there are repreated and non-repeated in the same column, the repeated are summed and multiplied by the number of repetitions and then the result is added to the non-repeated.\n\n\n\n\nDetails\n\n\n\n\nplayer\nNumber of the player we want to calculate the score.\n\n\n\n\nmatatena = Game()\nmatatena.boards[0] = np.array([[1,0,0],\n                               [1,2,3],\n                               [4,2,5]])\nassert matatena.score(0) == 8+8+8\n\nNow that we know how to calculate the score, we can patch the __repr__ method of our class to show the score of each player as well:\n\nmatatena = Game()\nassert not matatena.is_done()\nmatatena\n\nPlayer 1 (0.0)\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 2 (0.0) *\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\n\n\n\nplayer1 = \"\"\"\nPlayer 1 (0) *\n[[0 0 0]\n [0 0 0]\n [0 0 0]]\n\"\"\"\nplayer2 = \"\"\"\nPlayer 2 (0)\n[[0 0 0]\n [0 0 0]\n [0 0 0]]\n\"\"\"\n\n\nplayer1 = \"Player 1 (0) *\"\nplayer2 = \"Player 2 (0)\"\n\nboard1 = str(np.zeros(shape=(3,3)))\nboard2 = str(np.zeros(shape=(3,3)))\n\nprint(board1)\n\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\n\n\n\nboard1\n\n'[[0. 0. 0.]\\n [0. 0. 0.]\\n [0. 0. 0.]]'\n\n\n\nlen(player1), len(board1.split(\"\\n\")[-1])\n\n(14, 12)\n\n\n\nmax(map(len, board1.split(\"\\n\"))), len(player1)\n\n(12, 14)\n\n\n\nmax_len = max(max(map(len, board1.split(\"\\n\"))), len(player1))\nmax_len\n\n14\n\n\n\nnew_board = \"\\n\".join(map(lambda x: x.ljust(max_len, \" \"), board1.split(\"\\n\")))\nprint(player1)\nprint(new_board)\n\nPlayer 1 (0) *\n[[0. 0. 0.]   \n [0. 0. 0.]   \n [0. 0. 0.]]  \n\n\n\nsplit_lines = zip(player1.split(\"\\n\"), player2.split(\"\\n\"))\nres = \"\\n\".join([s1 + s2 for s1, s2 in split_lines])\nprint(res)\n\n\nPlayer 1 (0) *Player 2 (0)\n[[0 0 0][[0 0 0]\n [0 0 0] [0 0 0]\n [0 0 0]] [0 0 0]]"
   },
   {
     "objectID": "exceptions.html",
@@ -26,5 +26,12 @@
     "title": "matatena",
     "section": "",
     "text": "pip install matatena"
+  },
+  {
+    "objectID": "core.html#full-turn",
+    "href": "core.html#full-turn",
+    "title": "Matatena",
+    "section": "Full turn",
+    "text": "Full turn\nA full turn in a Matatena game must follow the following steps:\n\nCheck the current player\nDraw a random dice\nPlace the dice in a column\n\nCheck if the column is not full -> The dice can be placed (If it can’t be placed the game is ended)\n\nChange the current player to the next one in the list\nRepeat\n\n\n\nGame.play_turn\n\n Game.play_turn ()\n\nPlays a full turn.\n\nmatatena = Game()\nmatatena.play_turn()\n# The player is asked for an input and the rolled dice is placed\n# in the chosen column.\nmatatena\n\nDice to place: 4\nPlayer 1\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 2 *\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\n\n\nPlayer 1 *\n[[0. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]\nPlayer 2\n[[4. 0. 0.]\n [0. 0. 0.]\n [0. 0. 0.]]"
   }
 ]
