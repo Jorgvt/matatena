@@ -66,15 +66,24 @@ class Game():
                  dice, # Dice to place.
                  ):
         """
-        Adds a dice to the corresponding player in the specified column.
+        Adds a dice to the corresponding player in the specified column
+        and removes same dice from the opposite board if they are in the same column.
         """
         board_column = self.boards[player][:,column]
         idxs_dice = np.where(board_column==0)[0]
         if len(idxs_dice)==0: raise ColumnFullError # Can't place dice in a full column.
         board_column[idxs_dice[0]] = dice
+
+        ## Remove dice from the opponent's board
+        opposite_players_mask = np.arange(self.boards.shape[0]) != player
+        opposite_columns = self.boards[opposite_players_mask][:,column]
+        opposite_columns = self.boards[opposite_players_mask].squeeze()[:,column]
+        idxs = np.where(opposite_columns==dice)[0]
+        self.boards[opposite_players_mask,idxs,column] = 0
+        
         return self.is_done()
 
-# %% ../00_core.ipynb 12
+# %% ../00_core.ipynb 13
 @patch
 def score(self: Game,
           player, # Number of the player we want to calculate the score.
@@ -93,7 +102,7 @@ def score(self: Game,
         total += sum_col
     return total
 
-# %% ../00_core.ipynb 15
+# %% ../00_core.ipynb 16
 @patch
 def __repr__(self: Game):
     """
@@ -110,7 +119,7 @@ def __repr__(self: Game):
                       player1,
                       str(self.boards[1])])
 
-# %% ../00_core.ipynb 17
+# %% ../00_core.ipynb 18
 @patch
 def _pad_player_board(self: Game,
                       player: str, # Player __repr__
@@ -123,7 +132,7 @@ def _pad_player_board(self: Game,
     max_len = max(max(map(len, board.split("\n"))), len(player))
     return "\n".join(map(lambda x: x.ljust(max_len, " "), "\n".join([player, board]).split("\n")))
 
-# %% ../00_core.ipynb 18
+# %% ../00_core.ipynb 19
 @patch
 def _join_players_boards(self: Game,
                          playerboard1: str, # Padded playerboard obtained from `._pad_player_board()`.
@@ -142,7 +151,7 @@ def _join_players_boards(self: Game,
     res = "\n".join([s1 + s2 for s1, s2 in split_lines])
     return res
 
-# %% ../00_core.ipynb 19
+# %% ../00_core.ipynb 20
 @patch
 def __repr__(self: Game):
     """
@@ -162,7 +171,7 @@ def __repr__(self: Game):
     
     return self._join_players_boards(padded0, padded1)
 
-# %% ../00_core.ipynb 22
+# %% ../00_core.ipynb 23
 @patch
 def play_turn(self: Game):
     """

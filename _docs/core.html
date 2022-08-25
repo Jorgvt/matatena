@@ -307,11 +307,11 @@ Player 2 *
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> matatena.is_done()</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1
+<pre><code>Player 1 *
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]
-Player 2 *
+Player 2
 [[1. 1. 1.]
  [1. 1. 1.]
  [1. 1. 1.]]</code></pre>
@@ -352,6 +352,34 @@ Player 2
 <pre><code>False</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>matatena.current_player <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>matatena.boards[<span class="dv">1</span>] <span class="op">=</span> np.ones_like(matatena.boards[<span class="dv">1</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Player 1 *
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[1. 1. 1.]
+ [1. 1. 1.]
+ [1. 1. 1.]]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 *
+[[1. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[0. 1. 1.]
+ [0. 1. 1.]
+ [0. 1. 1.]]</code></pre>
+</div>
+</div>
 </section>
 <section id="calculating-the-score" class="level2">
 <h2 class="anchored" data-anchor-id="calculating-the-score">Calculating the score</h2>
@@ -377,36 +405,36 @@ Player 2
 </tbody>
 </table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>matatena.boards[<span class="dv">0</span>] <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                               [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                               [<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">5</span>]])</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> matatena.score(<span class="dv">0</span>) <span class="op">==</span> <span class="dv">8</span><span class="op">+</span><span class="dv">8</span><span class="op">+</span><span class="dv">8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>matatena.boards[<span class="dv">0</span>] <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                               [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                               [<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">5</span>]])</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> matatena.score(<span class="dv">0</span>) <span class="op">==</span> <span class="dv">8</span><span class="op">+</span><span class="dv">8</span><span class="op">+</span><span class="dv">8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we know how to calculate the score, we can <code>patch</code> the <code>__repr__</code> method of our class to show the score of each player as well:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> matatena.is_done()</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> matatena.is_done()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1 (0.0) *
+<pre><code>Player 1 (0.0)
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]
-Player 2 (0.0)
+Player 2 (0.0) *
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1 (0.0) | Player 2 (0.0) *
-[[0. 0. 0.]    | [[0. 0. 0.]     
- [0. 0. 0.]    |  [0. 0. 0.]     
- [0. 0. 0.]]   |  [0. 0. 0.]]    </code></pre>
+<pre><code>Player 1 (0.0) * | Player 2 (0.0)
+[[0. 0. 0.]      | [[0. 0. 0.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
 </div>
 </div>
 </section>
@@ -432,16 +460,16 @@ Player 2 (0.0)
 </blockquote>
 <p>Plays a full turn.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena.current_player)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>matatena.play_turn()</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;The player is asked for an input and the rolled dice is placed</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in the chosen column.</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena.current_player)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena.current_player)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>matatena.play_turn()</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;The player is asked for an input and the rolled dice is placed</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in the chosen column.</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena.current_player)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1
-Dice to place: 2
+Dice to place: 5
 Player 1 (0.0) | Player 2 (0.0) *
 [[0. 0. 0.]    | [[0. 0. 0.]     
  [0. 0. 0.]    |  [0. 0. 0.]     
@@ -449,8 +477,8 @@ Player 1 (0.0) | Player 2 (0.0) *
 0</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1 (0.0) * | Player 2 (2.0)
-[[0. 0. 0.]      | [[2. 0. 0.]   
+<pre><code>Player 1 (0.0) * | Player 2 (5.0)
+[[0. 0. 0.]      | [[5. 0. 0.]   
  [0. 0. 0.]      |  [0. 0. 0.]   
  [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
 </div>
