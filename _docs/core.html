@@ -137,26 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">matatena</span>
   </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/Jorgvt/matatena/"><i class="bi bi-github" role="img">
-</i> 
- </a>
-  </li>  
-</ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-reader-toggle nav-link" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
-  <div class="quarto-reader-toggle-btn">
-  <i class="bi"></i>
-  </div>
-</a>
-              </div>
-              <div id="quarto-search" class="" title="Search"></div>
-          </div> <!-- /navcollapse -->
+          <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -187,6 +168,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./exceptions.html" class="sidebar-item-text sidebar-link">Custom exceptions</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gym.html" class="sidebar-item-text sidebar-link">Gym Environment</a>
   </div>
 </li>
     </ul>
@@ -250,6 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Definition of the board</h1>
 <p>Each game board (one for each player) can be represented, for example, with a <code>np.array</code>. But we may probably benefit from having a “global” object that controls both of the players to keep track of both boards and the score in a more simple manner.</p>
 <hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/core.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="game" class="level3">
 <h3 class="anchored" data-anchor-id="game">Game</h3>
 <blockquote class="blockquote">
@@ -291,11 +278,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> matatena.is_done()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1
+<pre><code>Player 1 *
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]
-Player 2 *
+Player 2
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]</code></pre>
@@ -324,19 +311,19 @@ Player 2
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Player 1
+<pre><code>Player 1 *
 [[6. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]
-Player 2 *
+Player 2
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]
-Player 1
+Player 1 *
 [[6. 0. 0.]
  [6. 0. 0.]
  [0. 0. 0.]]
-Player 2 *
+Player 2
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]</code></pre>
@@ -385,6 +372,7 @@ Player 2
 <section id="calculating-the-score" class="level2">
 <h2 class="anchored" data-anchor-id="calculating-the-score">Calculating the score</h2>
 <hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/core.py#L88" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="game.score" class="level3">
 <h3 class="anchored" data-anchor-id="game.score">Game.score</h3>
 <blockquote class="blockquote">
@@ -418,11 +406,11 @@ Player 2
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> matatena.is_done()</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1 (0.0)
+<pre><code>Player 1 (0.0) *
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]
-Player 2 (0.0) *
+Player 2 (0.0)
 [[0. 0. 0.]
  [0. 0. 0.]
  [0. 0. 0.]]</code></pre>
@@ -432,10 +420,10 @@ Player 2 (0.0) *
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1 (0.0) * | Player 2 (0.0)
-[[0. 0. 0.]      | [[0. 0. 0.]   
- [0. 0. 0.]      |  [0. 0. 0.]   
- [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
+<pre><code>Player 1 (0.0) | Player 2 (0.0) *
+[[0. 0. 0.]    | [[0. 0. 0.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    </code></pre>
 </div>
 </div>
 </section>
@@ -454,6 +442,7 @@ Player 2 (0.0) *
 <li>Repeat</li>
 </ul>
 <hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/core.py#L176" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="game.play_turn" class="level3">
 <h3 class="anchored" data-anchor-id="game.play_turn">Game.play_turn</h3>
 <blockquote class="blockquote">
@@ -470,7 +459,7 @@ Player 2 (0.0) *
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0
-Dice to place: 5
+Dice to place: 6
 Player 1 (0.0) * | Player 2 (0.0)
 [[0. 0. 0.]      | [[0. 0. 0.]   
  [0. 0. 0.]      |  [0. 0. 0.]   
@@ -478,8 +467,8 @@ Player 1 (0.0) * | Player 2 (0.0)
 0</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre><code>Player 1 (5.0) * | Player 2 (0.0)
-[[5. 0. 0.]      | [[0. 0. 0.]   
+<pre><code>Player 1 (6.0) * | Player 2 (0.0)
+[[6. 0. 0.]      | [[0. 0. 0.]   
  [0. 0. 0.]      |  [0. 0. 0.]   
  [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
 </div>

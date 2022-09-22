@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "matatena"
+  site-url: "https://Jorgvt.github.io/matatena/"
+  description: "Python implementation of the minigame Knucklebones (Matatena in spanish) in the game Cult of the lamb. The idea is to provide it as a gym environment for reinforcement learning."
+  repo-branch: main
+  repo-url: "https://github.com/Jorgvt/matatena/"

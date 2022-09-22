@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>matatena - Gym Environment</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="matatena - Gym Environment">
+<meta property="og:description" content="Now that we’ve been able to implement the basic functionalities of the game in Python, our next step is to implement it as a gym.">
+<meta property="og:site-name" content="matatena">
+<meta name="twitter:title" content="matatena - Gym Environment">
+<meta name="twitter:description" content="Now that we’ve been able to implement the basic functionalities of the game in Python, our next step is to implement it as a gym.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">matatena</span>
+  </a>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Gym Environment</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">matatena</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./core.html" class="sidebar-item-text sidebar-link">Matatena</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exceptions.html" class="sidebar-item-text sidebar-link">Custom exceptions</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gym.html" class="sidebar-item-text sidebar-link active">Gym Environment</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#matatenaenv" id="toc-matatenaenv" class="nav-link active" data-scroll-target="#matatenaenv">MatatenaEnv</a></li>
+  <li><a href="#reset" id="toc-reset" class="nav-link" data-scroll-target="#reset">Reset</a>
+  <ul class="collapse">
+  <li><a href="#matatenaenv.reset" id="toc-matatenaenv.reset" class="nav-link" data-scroll-target="#matatenaenv.reset">MatatenaEnv.reset</a></li>
+  </ul></li>
+  <li><a href="#step" id="toc-step" class="nav-link" data-scroll-target="#step">Step</a>
+  <ul class="collapse">
+  <li><a href="#matatenaenv.step" id="toc-matatenaenv.step" class="nav-link" data-scroll-target="#matatenaenv.step">MatatenaEnv.step</a></li>
+  </ul></li>
+  <li><a href="#render" id="toc-render" class="nav-link" data-scroll-target="#render"><code>Render</code></a>
+  <ul class="collapse">
+  <li><a href="#matatenaenv.render" id="toc-matatenaenv.render" class="nav-link" data-scroll-target="#matatenaenv.render">MatatenaEnv.render</a></li>
+  </ul></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Jorgvt/matatena/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Gym Environment</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Now that we’ve been able to implement the basic functionalities of the game in Python, our next step is to implement it as a <code>gym.Env</code> so that it can be used easily to train reinforcement learning models. As a starting point, we will be following the docs: https://www.gymlibrary.dev/content/environment_creation/.</p>
+<p>They remind us to add the <code>metadata</code> attribute to specify the render-mode (<code>human</code>, <code>rgb_array</code> or <code>ansi</code>) and the framerate. Every environment should support the render-mode <code>None</code>, and you don’t need to add it explicitly.</p>
+<p>As we have almost defined the environment completelly before, we don’t need to add a lot of information to this class (we can inherit from the one we defined before); but we have to explicitly define the attributes <code>self.observation_space</code> and <code>self.action_space</code>.</p>
+<ul>
+<li><p><code>self.action_space</code>: Our agents can only choose them column in which they want to place the dice, so our action space is going to be restricted to a number between 0 and 2 (assuming the board has 3 columns, but could depend on it directly).</p></li>
+<li><p><code>self.observation_space</code>: What does an agent see? It makes sense to provide all the information available: Its current board, the opponent’s board and the dice it has to place. We can implement this easily with a <code>spaces.Dict</code>. The different boards can be encoded as <code>spaces.Box</code> with <code>dtype=np.uint8</code> so that they are discrete environments by with an array-like shape. It should work very similarly with a <code>spaces.MultiDiscrete</code> environment for example.</p></li>
+</ul>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/gym.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="matatenaenv" class="level3">
+<h3 class="anchored" data-anchor-id="matatenaenv">MatatenaEnv</h3>
+<blockquote class="blockquote">
+<pre><code> MatatenaEnv (*args, **kwds)</code></pre>
+</blockquote>
+<p><code>gym</code>-ready implementation of <code>Game</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> MatatenaEnv()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 (0.0) | Player 2 (0.0) *
+[[0. 0. 0.]    | [[0. 0. 0.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>matatena.observation_space.sample()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>OrderedDict([('agent',
+              array([[6, 1, 3],
+                     [6, 3, 6],
+                     [3, 6, 5]], dtype=uint8)),
+             ('dice', 2),
+             ('opponent',
+              array([[2, 1, 5],
+                     [1, 5, 3],
+                     [6, 2, 2]], dtype=uint8))])</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>matatena.action_space.sample()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>0</code></pre>
+</div>
+</div>
+</section>
+<section id="reset" class="level1">
+<h1>Reset</h1>
+<p>The <code>reset</code> method will be called to initiate a new episode. It should be called as well when a <code>done</code> signal is issued by the environment to reset it. It must accept a <code>reset</code> parameter.</p>
+<p>It is recommended to use the random generator included when inheriting from <code>gym.Env</code>(<code>self.np_random</code>), but we need to remember to call <code>super().reset(seed=seed)</code> to make sure that the environment is seeded correctly.</p>
+<p>Finally, it must return a tuple of the initial observation and some auxiliary information (which will be <code>None</code> in our case).</p>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/gym.py#L38" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="matatenaenv.reset" class="level3">
+<h3 class="anchored" data-anchor-id="matatenaenv.reset">MatatenaEnv.reset</h3>
+<blockquote class="blockquote">
+<pre><code> MatatenaEnv.reset (seed:int=None, options=None)</code></pre>
+</blockquote>
+<p>Reinitializes the environment and returns the initial state.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seed</td>
+<td>int</td>
+<td>None</td>
+<td>Seed to control the RNG.</td>
+</tr>
+<tr class="even">
+<td>options</td>
+<td>NoneType</td>
+<td>None</td>
+<td>Additional options.</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> MatatenaEnv()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 (0.0) * | Player 2 (0.0)
+[[0. 0. 0.]      | [[0. 0. 0.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>matatena.reset()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>({'agent': array([[0., 0., 0.],
+         [0., 0., 0.],
+         [0., 0., 0.]]),
+  'opponent': array([[0., 0., 0.],
+         [0., 0., 0.],
+         [0., 0., 0.]]),
+  'dice': 4},
+ None)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 (0.0) * | Player 2 (0.0)
+[[0. 0. 0.]      | [[0. 0. 0.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="step" class="level1">
+<h1>Step</h1>
+<p>The <code>.step()</code> method contains the logic of the environment. Must accept an <code>action</code>, compute the state of the environment after applying the <code>action</code> and return a 4-tuple: <code>(observation, reward, done, info)</code>.</p>
+<blockquote class="blockquote">
+<p>In our case, the <code>action</code> should be the column in which the agent wants to place the rolled dice.</p>
+</blockquote>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/gym.py#L63" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="matatenaenv.step" class="level3">
+<h3 class="anchored" data-anchor-id="matatenaenv.step">MatatenaEnv.step</h3>
+<blockquote class="blockquote">
+<pre><code> MatatenaEnv.step (action)</code></pre>
+</blockquote>
+<p>Run one timestep of the environment’s dynamics.</p>
+<p>When end of episode is reached, you are responsible for calling :meth:<code>reset</code> to reset this environment’s state. Accepts an action and returns either a tuple <code>(observation, reward, terminated, truncated, info)</code>, or a tuple (observation, reward, done, info). The latter is deprecated and will be removed in future versions.</p>
+<p>Args: action (ActType): an action provided by the agent</p>
+<p>Returns: observation (object): this will be an element of the environment’s :attr:<code>observation_space</code>. This may, for instance, be a numpy array containing the positions and velocities of certain objects. reward (float): The amount of reward returned as a result of taking the action. terminated (bool): whether a <code>terminal state</code> (as defined under the MDP of the task) is reached. In this case further step() calls could return undefined results. truncated (bool): whether a truncation condition outside the scope of the MDP is satisfied. Typically a timelimit, but could also be used to indicate agent physically going out of bounds. Can be used to end the episode prematurely before a <code>terminal state</code> is reached. info (dictionary): <code>info</code> contains auxiliary diagnostic information (helpful for debugging, learning, and logging). This might, for instance, contain: metrics that describe the agent’s performance state, variables that are hidden from observations, or individual reward terms that are combined to produce the total reward. It also can contain information that distinguishes truncation and termination, however this is deprecated in favour of returning two booleans, and will be removed in a future version.</p>
+<pre><code>(deprecated)
+done (bool): A boolean value for if the episode has ended, in which case further :meth:`step` calls will return undefined results.
+    A done signal may be emitted for different reasons: Maybe the task underlying the environment was solved successfully,
+    a certain timelimit was exceeded, or the physics simulation has entered an invalid state.</code></pre>
+<table class="table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 84%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>action</td>
+<td>Action to be executed on the environment. Should be the column in which the agent wants to place the dice.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="render" class="level1">
+<h1><code>Render</code></h1>
+<blockquote class="blockquote">
+<p>Lastly, only rendering the environment is left.</p>
+</blockquote>
+<p>As we have previously built a quite decent <code>__repr__</code> method, we are going to only use that one. It would be nice to get something nicer runnig with <em>PyGame</em>, tho.</p>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/gym.py#L98" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="matatenaenv.render" class="level3">
+<h3 class="anchored" data-anchor-id="matatenaenv.render">MatatenaEnv.render</h3>
+<blockquote class="blockquote">
+<pre><code> MatatenaEnv.render ()</code></pre>
+</blockquote>
+<p>Compute the render frames as specified by render_mode attribute during initialization of the environment.</p>
+<p>The set of supported modes varies per environment. (And some third-party environments may not support rendering at all.) By convention, if render_mode is:</p>
+<ul>
+<li>None (default): no render is computed.</li>
+<li>human: render return None. The environment is continuously rendered in the current display or terminal. Usually for human consumption.</li>
+<li>single_rgb_array: return a single frame representing the current state of the environment. A frame is a numpy.ndarray with shape (x, y, 3) representing RGB values for an x-by-y pixel image.</li>
+<li>rgb_array: return a list of frames representing the states of the environment since the last reset. Each frame is a numpy.ndarray with shape (x, y, 3), as with single_rgb_array.</li>
+<li>ansi: Return a list of strings (str) or StringIO.StringIO containing a terminal-style text representation for each time step. The text can include newlines and ANSI escape sequences (e.g.&nbsp;for colors).</li>
+</ul>
+<p>Note: Rendering computations is performed internally even if you don’t call render(). To avoid this, you can set render_mode = None and, if the environment supports it, call render() specifying the argument ‘mode’.</p>
+<p>Note: Make sure that your class’s metadata ‘render_modes’ key includes the list of supported modes. It’s recommended to call super() in implementations to use the functionality of this method.</p>
+</section>
+</section>
+<section id="usage" class="level1">
+<h1>Usage</h1>
+<blockquote class="blockquote">
+<p>Simple usage examples.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> MatatenaEnv()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>obs, info <span class="op">=</span> env.reset()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>env.render()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rolled dice is: </span><span class="sc">{</span>obs[<span class="st">'dice'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Player 1 (0.0) | Player 2 (0.0) *
+[[0. 0. 0.]    | [[0. 0. 0.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    
+Rolled dice is: 6</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>action <span class="op">=</span> env.action_space.sample()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Placing the dice in column: </span><span class="sc">{</span>action<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>obs, reward, done, info <span class="op">=</span> env.step(action)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>env.render()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Placing the dice in column: 2
+Player 1 (0.0) * | Player 2 (6.0)
+[[0. 0. 0.]      | [[0. 0. 6.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
+</div>
+</div>
+<p>We can even perform a full game:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> MatatenaEnv()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>obs, info <span class="op">=</span> env.reset()</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>done <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="kw">not</span> done:</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    action <span class="op">=</span> env.action_space.sample()</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    obs, reward, done, info <span class="op">=</span> env.step(action)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    env.render()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Player 1 (0.0) * | Player 2 (4.0)
+[[0. 0. 0.]      | [[0. 0. 4.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  
+Player 1 (2.0) | Player 2 (4.0) *
+[[2. 0. 0.]    | [[0. 0. 4.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    
+Player 1 (2.0) * | Player 2 (5.0)
+[[2. 0. 0.]      | [[1. 0. 4.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  
+Player 1 (3.0) | Player 2 (5.0) *
+[[2. 0. 1.]    | [[1. 0. 4.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    
+Player 1 (3.0) * | Player 2 (7.0)
+[[2. 0. 1.]      | [[1. 2. 4.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  
+Player 1 (5.0) | Player 2 (5.0) *
+[[2. 2. 1.]    | [[1. 0. 4.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    
+Player 1 (3.0) * | Player 2 (7.0)
+[[2. 0. 1.]      | [[1. 2. 4.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  
+Player 1 (8.0) | Player 2 (7.0) *
+[[2. 0. 1.]    | [[1. 2. 4.]     
+ [0. 0. 5.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    
+Player 1 (8.0) * | Player 2 (13.0)
+[[2. 0. 1.]      | [[1. 2. 4.]    
+ [0. 0. 5.]      |  [0. 0. 6.]    
+ [0. 0. 0.]]     |  [0. 0. 0.]]   
+Player 1 (10.0) | Player 2 (13.0) *
+[[2. 0. 1.]     | [[1. 2. 4.]      
+ [0. 0. 5.]     |  [0. 0. 6.]      
+ [0. 0. 2.]]    |  [0. 0. 0.]]     
+Player 1 (10.0) * | Player 2 (18.0)
+[[2. 0. 1.]       | [[1. 2. 4.]    
+ [0. 0. 5.]       |  [5. 0. 6.]    
+ [0. 0. 2.]]      |  [0. 0. 0.]]   
+Player 1 (13.0) | Player 2 (18.0) *
+[[2. 3. 1.]     | [[1. 2. 4.]      
+ [0. 0. 5.]     |  [5. 0. 6.]      
+ [0. 0. 2.]]    |  [0. 0. 0.]]     
+Player 1 (13.0) * | Player 2 (30.0)
+[[2. 3. 1.]       | [[1. 2. 4.]    
+ [0. 0. 5.]       |  [5. 0. 6.]    
+ [0. 0. 2.]]      |  [0. 0. 4.]]   
+Player 1 (22.0) | Player 2 (30.0) *
+[[2. 3. 1.]     | [[1. 2. 4.]      
+ [0. 3. 5.]     |  [5. 0. 6.]      
+ [0. 0. 2.]]    |  [0. 0. 4.]]     
+Player 1 (22.0) * | Player 2 (33.0)
+[[2. 3. 1.]       | [[1. 2. 4.]    
+ [0. 3. 5.]       |  [5. 0. 6.]    
+ [0. 0. 2.]]      |  [3. 0. 4.]]   
+Player 1 (28.0) | Player 2 (33.0) *
+[[2. 3. 1.]     | [[1. 2. 4.]      
+ [0. 3. 5.]     |  [5. 0. 6.]      
+ [0. 6. 2.]]    |  [3. 0. 4.]]     
+Player 1 (28.0) * | Player 2 (37.0)
+[[2. 3. 1.]       | [[1. 2. 4.]    
+ [0. 3. 5.]       |  [5. 4. 6.]    
+ [0. 6. 2.]]      |  [3. 0. 4.]]   
+Player 1 (29.0) | Player 2 (36.0) *
+[[2. 3. 1.]     | [[0. 2. 4.]      
+ [1. 3. 5.]     |  [5. 4. 6.]      
+ [0. 6. 2.]]    |  [3. 0. 4.]]     
+Player 1 (29.0) * | Player 2 (42.0)
+[[2. 3. 1.]       | [[0. 2. 4.]    
+ [1. 3. 5.]       |  [5. 4. 6.]    
+ [0. 6. 2.]]      |  [3. 2. 4.]]   
+Player 1 (35.0) | Player 2 (42.0) *
+[[2. 3. 1.]     | [[0. 2. 4.]      
+ [1. 3. 5.]     |  [5. 4. 6.]      
+ [2. 6. 2.]]    |  [3. 2. 4.]]     </code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
