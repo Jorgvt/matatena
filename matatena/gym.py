@@ -13,6 +13,7 @@ import gym
 from gym import spaces
 
 from .core import *
+from .exceptions import *
 
 # %% ../02_gym.ipynb 5
 class MatatenaEnv(gym.Env, Game):
@@ -64,11 +65,27 @@ def step(self: MatatenaEnv,
          action, # Action to be executed on the environment. Should be the column in which the agent wants to place the dice.
          ): # (observation, reward, done, info) tuple.
 
-    ## 1. Add the dice to the desired column
-    self.add_dice(player=self.current_player,
-                  column=action,
-                  dice=self.last_dice)
     
+    ## 1. Add the dice to the desired column
+    ## 1.1. If the column is full, the game is terminated and a big negative reward is returned
+    try:
+      self.add_dice(player=self.current_player,
+                    column=action,
+                    dice=self.last_dice)
+    except ColumnFullError:
+        info = "Terminated -> column full"
+        done = True
+        reward = -10
+        opposite_players_mask = np.arange(self.boards.shape[0]) != self.current_player
+        observation =  {
+          "agent": self.boards[self.current_player],
+          "opponent": self.boards[opposite_players_mask].squeeze(),
+          "dice": self.last_dice,
+        }
+        return observation, reward, done, info
+    
+    
+
     ## 2. Check if the game is done
     done = self.is_done()
 
