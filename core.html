@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Matatena (or Knucklebones in english) is a game played in the game Cult of the lamb. Here we provied a Python implementation of the game with the objective to be able to use it as a gym environment for reinforcement learning.">
+
+<title>matatena - Matatena</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="matatena - Matatena">
+<meta property="og:description" content="Matatena (or Knucklebones in english) is a game played in the game Cult of the lamb. Here we provied a Python implementation of the game with the objective to be able to use it as a gym environment for reinforcement learning.">
+<meta property="og:site-name" content="matatena">
+<meta name="twitter:title" content="matatena - Matatena">
+<meta name="twitter:description" content="Matatena (or Knucklebones in english) is a game played in the game Cult of the lamb. Here we provied a Python implementation of the game with the objective to be able to use it as a gym environment for reinforcement learning.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">matatena</span>
+    </a>
+  </div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Matatena</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">matatena</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./core.html" class="sidebar-item-text sidebar-link active">Matatena</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exceptions.html" class="sidebar-item-text sidebar-link">Custom exceptions</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gym.html" class="sidebar-item-text sidebar-link">Gym Environment</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-rules" id="toc-basic-rules" class="nav-link active" data-scroll-target="#basic-rules">Basic rules</a></li>
+  <li><a href="#definition-of-the-board" id="toc-definition-of-the-board" class="nav-link" data-scroll-target="#definition-of-the-board">Definition of the board</a>
+  <ul class="collapse">
+  <li><a href="#game" id="toc-game" class="nav-link" data-scroll-target="#game">Game</a></li>
+  <li><a href="#calculating-the-score" id="toc-calculating-the-score" class="nav-link" data-scroll-target="#calculating-the-score">Calculating the score</a>
+  <ul class="collapse">
+  <li><a href="#game.score" id="toc-game.score" class="nav-link" data-scroll-target="#game.score">Game.score</a></li>
+  </ul></li>
+  <li><a href="#full-turn" id="toc-full-turn" class="nav-link" data-scroll-target="#full-turn">Full turn</a>
+  <ul class="collapse">
+  <li><a href="#game.play_turn" id="toc-game.play_turn" class="nav-link" data-scroll-target="#game.play_turn">Game.play_turn</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Jorgvt/matatena/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Matatena</h1>
+</div>
+
+<div>
+  <div class="description">
+    Matatena (or Knucklebones in english) is a game played in the game <em>Cult of the lamb</em>. Here we provied a Python implementation of the game with the objective to be able to use it as a <em>gym</em> environment for reinforcement learning.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="basic-rules" class="level1">
+<h1>Basic rules</h1>
+<p>Knucklebones is a simple game in which a dice is rolled and one of the two players must place it in their corresponding board. Each player can only choose the column in which the dice is placed, and if any dice is already placed in that column, the following is put behind. If there are more than one dice with the same number, their score is added and then multiplied by the number of times it appears. For example, if a column has two 6s, their values add up to 24, but if a column has a 6 and a 5, the total score would be 11.</p>
+<blockquote class="blockquote">
+<p>The basic board is a 3x3 grid.</p>
+</blockquote>
+</section>
+<section id="definition-of-the-board" class="level1">
+<h1>Definition of the board</h1>
+<p>Each game board (one for each player) can be represented, for example, with a <code>np.array</code>. But we may probably benefit from having a “global” object that controls both of the players to keep track of both boards and the score in a more simple manner.</p>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/core.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="game" class="level3">
+<h3 class="anchored" data-anchor-id="game">Game</h3>
+<blockquote class="blockquote">
+<pre><code> Game (n_players=2, board_size=3)</code></pre>
+</blockquote>
+<p>Class that controls the whole game. It keeps track of both boards.</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n_players</td>
+<td>int</td>
+<td>2</td>
+<td>Number of players.</td>
+</tr>
+<tr class="even">
+<td>board_size</td>
+<td>int</td>
+<td>3</td>
+<td>Size of the board. It is a squared grid of <code>board_size</code>x<code>board_size</code></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> matatena.is_done()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 *
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>matatena.boards[<span class="dv">1</span>] <span class="op">=</span> np.ones_like(matatena.boards[<span class="dv">1</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> matatena.is_done()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 *
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[1. 1. 1.]
+ [1. 1. 1.]
+ [1. 1. 1.]]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Player 1 *
+[[6. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 1 *
+[[6. 0. 0.]
+ [6. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matatena.add_dice(player=0, column=0, dice=6)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>False</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>matatena.current_player <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>matatena.boards[<span class="dv">1</span>] <span class="op">=</span> np.ones_like(matatena.boards[<span class="dv">1</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>matatena.add_dice(player<span class="op">=</span><span class="dv">0</span>, column<span class="op">=</span><span class="dv">0</span>, dice<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> (matatena.boards[<span class="dv">1</span>][:,<span class="dv">0</span>] <span class="op">==</span> <span class="dv">1</span>).<span class="bu">any</span>()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Player 1 *
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[1. 1. 1.]
+ [1. 1. 1.]
+ [1. 1. 1.]]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 *
+[[1. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2
+[[0. 1. 1.]
+ [0. 1. 1.]
+ [0. 1. 1.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="calculating-the-score" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-the-score">Calculating the score</h2>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/core.py#L88" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="game.score" class="level3">
+<h3 class="anchored" data-anchor-id="game.score">Game.score</h3>
+<blockquote class="blockquote">
+<pre><code> Game.score (player)</code></pre>
+</blockquote>
+<p>Returns the calculated score for a player. If there are numbers repeated in a column, their values must be added and multiplied by the number of repetitions. Otherwise, they are added. If there are repreated and non-repeated in the same column, the repeated are summed and multiplied by the number of repetitions and then the result is added to the non-repeated.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>player</td>
+<td>Number of the player we want to calculate the score.</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>matatena.boards[<span class="dv">0</span>] <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                               [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                               [<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">5</span>]])</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> matatena.score(<span class="dv">0</span>) <span class="op">==</span> <span class="dv">8</span><span class="op">+</span><span class="dv">8</span><span class="op">+</span><span class="dv">8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we know how to calculate the score, we can <code>patch</code> the <code>__repr__</code> method of our class to show the score of each player as well:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> matatena.is_done()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 (0.0) *
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+Player 2 (0.0)
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 (0.0) | Player 2 (0.0) *
+[[0. 0. 0.]    | [[0. 0. 0.]     
+ [0. 0. 0.]    |  [0. 0. 0.]     
+ [0. 0. 0.]]   |  [0. 0. 0.]]    </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="full-turn" class="level2">
+<h2 class="anchored" data-anchor-id="full-turn">Full turn</h2>
+<p>A full turn in a Matatena game must follow the following steps:</p>
+<ul>
+<li>Check the current player</li>
+<li>Draw a random dice</li>
+<li>Place the dice in a column
+<ul>
+<li>Check if the column is not full -&gt; The dice can be placed (If it can’t be placed the game is ended)</li>
+</ul></li>
+<li>Change the current player to the next one in the list</li>
+<li>Repeat</li>
+</ul>
+<hr>
+<p><a href="https://github.com/Jorgvt/matatena/blob/main/matatena/core.py#L176" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="game.play_turn" class="level3">
+<h3 class="anchored" data-anchor-id="game.play_turn">Game.play_turn</h3>
+<blockquote class="blockquote">
+<pre><code> Game.play_turn ()</code></pre>
+</blockquote>
+<p>Plays a full turn.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>matatena <span class="op">=</span> Game()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena.current_player)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>matatena.play_turn()</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;The player is asked for an input and the rolled dice is placed</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in the chosen column.</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matatena.current_player)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>matatena</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0
+Dice to place: 6
+Player 1 (0.0) * | Player 2 (0.0)
+[[0. 0. 0.]      | [[0. 0. 0.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  
+0</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Player 1 (6.0) * | Player 2 (0.0)
+[[6. 0. 0.]      | [[0. 0. 0.]   
+ [0. 0. 0.]      |  [0. 0. 0.]   
+ [0. 0. 0.]]     |  [0. 0. 0.]]  </code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
